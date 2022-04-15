@@ -1,0 +1,7 @@
+ctrl+shift+D - debugging
+ctrl+p - navigation
+ctrl+. - autofix
+nuget gallery in navigation window 
+dotnet watch run - to run application with watch run mode 
+ctrl+p
+ctrl+shift+p
