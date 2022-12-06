@@ -5,3 +5,62 @@ nuget gallery in navigation window
 dotnet watch run - to run application with watch run mode 
 ctrl+p
 ctrl+shift+p
+
+
+$dotnet --info //versions
+$dotnet --h //help
+$dotnet new -l //list all available applications
+$dotnet new <typeofproject eg. webapi> -n <name> //
+$dotnet new classlib -n Application
+$dotnet new classlib -n Persistance
+
+#references
+$dotnet sln add API/API.csproj
+$dotnet sln add Application
+$dotnet sln add Domain
+
+
+#Impicit 'using' feature is enabeled for API project in API.csproj, it gives us ability to use one single using statement across
+#whole project, instead of having 'using' lines at the top of every file which use this package
+
+#Another setting is Nullable enabled
+#Question mark after every declaration where property may be a null object
+
+
+#TIP: ctrl + , to show settings, then use exclude files to remove it from explorer
+#By default we've got launchBrowser in launchSettings.json set on true - to disable it we need to set in on false
+#dotnet run or dotnet watch run
+#dotnet webserver is called KESTREL
+
+#Startup class is used by main method to tell application what it should start.
+#Additionally there are two appsettings files - one is appsettings.Development applied just to dev environment,
+#next is appsettings applied to the main method regardless which environment are we working on
+#We've got a Startup constructor where we are injecting IConfiguration file - by using this we've got access to whole
+#settings file inside our startup class
+
+#We are refeering to square bracket as an 'attributes'
+#In Route attribute we've got this placeholder '[controller]' - this allows us to use controler name as a patch
+
+#DbContext represent session of the database - combination of unit of work and repository pattern
+#TIP: Use ctrl + . to do quickfix
+
+#Default option for IConfiguration is public property. In our case we will opt for another way to do this
+
+#TIP: dotnet tool list --global
+#dotnet ef migrations add <migrationName> -p <projectname_where_thecontext_is> -s <startup project> 
+
+#dotnet ef database -h
+#dotnet new gitignore
+
+
+
+#CREATE REACT Application
+$node --version
+
+#Reviewing React project files
+#In JSX you can not assign class to html element as u usually do
+#You need to pass it as an object into curly bracket
+
+
+#How to handle gitignore
+$dotnet new gitignore
