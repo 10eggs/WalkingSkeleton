@@ -74,3 +74,24 @@ $dotnet new gitignore
 //MediatorPipe
 //IPipelieMediator - do something with message that is coming in
 
+//Inline styling in react is different than inline styling in raw html
+//JSX component returned from the function needs to be in <> or in <React.Fragment>
+
+    
+//Problem with file extension:
+//https://stackoverflow.com/questions/62059408/reactjs-and-typescript-refers-to-a-value-but-is-being-used-as-a-type-here-ts
+
+//We are passing activities array to the component. To do that we can do either pass props as an argument and get activities from props.activities
+//Or we can destruct activities directly from Props type - ({activties}:Props)
+
+//x && y - right hand is executed when x isnt null or undefined
+//semantic-ui - fluid class allows to use max space for the element
+//
+
+// <Button onClick={selectActivity(activity.id)} - this will try to run selectActivity function as soon as component will be rendered
+//  <Button onClick={() => selectActivity(activity.id)} - this is valid implementation
+// <Button onClick={cancelSelectActivity}basic color='grey' content='Cancel'></Button> - also this is valid as handler does not require any arguments
+
+
+
+
