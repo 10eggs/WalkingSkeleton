@@ -89,9 +89,25 @@ $dotnet new gitignore
 //
 
 // <Button onClick={selectActivity(activity.id)} - this will try to run selectActivity function as soon as component will be rendered
-//  <Button onClick={() => selectActivity(activity.id)} - this is valid implementation
+// <Button onClick={() => selectActivity(activity.id)} - this is valid implementation
 // <Button onClick={cancelSelectActivity}basic color='grey' content='Cancel'></Button> - also this is valid as handler does not require any arguments
 
 
 
 
+//To be able to track form value we need to add some parameters to our input element
+//props are 'value' and 'name'
+//Adding property of value is breaking ability to edit an input field
+//To have this ability again we need to add onChange event handler
+
+
+
+
+//const {name,value} = event.target;
+//setActivity({...activity, [name]:value})
+//<Form.Input placeholder='Title' value={activity.title} name='title' onChange={handleInputChange} />
+
+//To target property which matches this 'name' value, we need to use square bracket
+//property with key of the 'name' should be set to whatever value is
+
+//

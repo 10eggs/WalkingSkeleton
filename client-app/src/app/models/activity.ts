@@ -5,6 +5,5 @@ export interface Activity {
   description: string
   category: string
   city: string
-  myProperty: number
   venue: string
 }
