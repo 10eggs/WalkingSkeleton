@@ -119,3 +119,20 @@ $dotnet new gitignore
 
 //We are using arrow functions here - arrow functions are automatically bind to the class, normal functions do not
 //And it needs an extra action in order to bind it to the class
+
+//21.12
+//Inside our makeObservable class we need to bind our function with class to use 'this' keyword inside this function
+//To be able to observe our compontent needs to be exported as argument of the observer function in export statement, e.g.
+//export default observer(app);
+
+#MobX stric-mode
+#We should wrap every async/await invocation in our action (if we are updating observable directly) by passing everything after async/await call in
+#runInAction(()=>{})
+
+#If we'd like to avoid it we should introduce another action
+#setLoadingInitial
+
+#TIP - when component is complaining on activity may be equal to null then we can do following check before we'll return the component:
+#if(!component) return
+
+#We can mutate state in MobX, but we also can create new object - spread operator is creating a new object [...]
