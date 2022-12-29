@@ -15,6 +15,17 @@ export default class ActivityStore {
     makeAutoObservable(this);
   }
 
+  private setLoadingInitial = (state:boolean) => {
+    this.loadingInitial=state;
+  }
+
+  private setActivity = (activity:Activity) =>{
+    activity.date = activity.date.split('T')[0];
+    //We are mutating state of activities here
+    //It would be an anti pattern in ReduX
+    this.activityRegistry.set(activity.id,activity);
+  }
+
   get activitiesByDate(){
     return Array.from(this.activityRegistry.values()).sort((a,b) => Date.parse(a.date) - Date.parse(b.date));
   }
@@ -24,10 +35,7 @@ export default class ActivityStore {
       const activities = await agent.Activities.list();
       runInAction(()=>{
         activities.forEach(activity => {
-          activity.date = activity.date.split('T')[0];
-          //We are mutating state of activities here
-          //It would be an anti pattern in ReduX
-          this.activityRegistry.set(activity.id,activity);
+          this.setActivity(activity);
         })
         this.loadingInitial = false;
       })
@@ -40,21 +48,25 @@ export default class ActivityStore {
     }
   }
 
-  selectActivity = (id: string) =>{
-    this.selectedActivity = this.activityRegistry.get(id);
+  loadActivity = async (id:string) => {
+    let activity = this.getActivity(id);
+    if(activity) this.selectedActivity = activity;
+    else{
+      this.setLoadingInitial(true);
+      try{
+        activity = await agent.Activities.details(id);
+        this.setActivity(activity);
+      }
+      catch(err){
+        console.log(`Error while retrieving Activity from API: ${err}`)
+        this.setLoadingInitial(false);
+      }
+    }
+
   }
 
-  cancelSelectedActivity = () =>{
-    this.selectedActivity = undefined;
-  }
-
-  openForm = (id?: string) =>{
-    id ? this.selectActivity(id) : this.cancelSelectedActivity();
-    this.editMode = true;
-  }
-
-  closeForm = () =>{
-    this.editMode = false;
+  private getActivity = (id:string) =>{
+    return this.activityRegistry.get(id);
   }
 
   createActivity = async (activity: Activity) => {
@@ -102,7 +114,6 @@ export default class ActivityStore {
       await agent.Activities.delete(id);
       runInAction(()=>{
         this.activityRegistry.delete(id);
-        if(this.selectedActivity?.id === id) this.cancelSelectedActivity();
         this.loading = false;        
       })
     }
@@ -115,3 +126,4 @@ export default class ActivityStore {
   }
 
 }
+ 
