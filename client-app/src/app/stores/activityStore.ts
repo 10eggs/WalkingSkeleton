@@ -31,13 +31,14 @@ export default class ActivityStore {
   }
 
   loadActivities = async () =>{
+    this.setLoadingInitial(true);
     try{
       const activities = await agent.Activities.list();
       runInAction(()=>{
         activities.forEach(activity => {
           this.setActivity(activity);
         })
-        this.loadingInitial = false;
+        this.setLoadingInitial(false);
       })
     }
     catch(error){
@@ -56,6 +57,8 @@ export default class ActivityStore {
       try{
         activity = await agent.Activities.details(id);
         this.setActivity(activity);
+        this.selectedActivity = activity;
+        this.setLoadingInitial(false);
       }
       catch(err){
         console.log(`Error while retrieving Activity from API: ${err}`)
