@@ -6,7 +6,7 @@ export default function NotFound(){
     <Segment placeholder>
       <Header icon>
         <Icon name ='search'/>
-        Ooops - we've looked everywhere but could not find what you are looking for
+        Ooops - we've looked everywhere but could not find what you are looking for!
       </Header>
       <Segment.Inline>
         <Button as={Link} to='/activities'>
