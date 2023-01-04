@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { Activity } from '../models/activity';
+import { router } from '../router/Routes';
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -26,7 +27,8 @@ axios.interceptors.response.use(async response =>{
       toast.error('Forbidden');
       break;
     case 404:
-      toast.error('Not found');
+      //https://github.com/remix-run/react-router/issues/9422
+      router.navigate('/not-found')
       break;
     case 500:
       toast.error('Server error');
