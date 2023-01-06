@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using API.DTOs;
 using API.Services;
 using Domain;
@@ -79,5 +80,12 @@ namespace API.Controllers
 
       return BadRequest(result.Errors);
     }
+
+    // [HttpGet]
+    // public async Task<ActionResult<UserDto>> GetCurrentUser()
+    // {
+    //   var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+
+    // }
   }
 }
