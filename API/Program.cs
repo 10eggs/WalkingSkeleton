@@ -1,8 +1,5 @@
 using API.Extensions;
 using API.Middleware;
-using Application.Activities;
-using Application.Core;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistance;
 using Persistence;
@@ -15,12 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 //Add services and containers
 
-builder.Services.AddControllers(opt => 
+builder.Services.AddControllers(opt =>
 {
   var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
   opt.Filters.Add(new AuthorizeFilter(policy));
 
-  
+
 });
 
 builder.Services.AddHttpContextAccessor();
