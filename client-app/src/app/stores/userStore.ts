@@ -26,6 +26,7 @@ export default class UserStore {
         this.user = user
       });
       router.navigate('/activities')
+      store.modalStore.closeModal();
       console.log(user)
     } catch(err){
       throw err;
@@ -34,8 +35,18 @@ export default class UserStore {
 
   logout = () => {
     store.commonStore.setToken(null);
-    localStorage.removeItem('jwt');
     this.user = null;
     router.navigate('/')
+  }
+
+  getUser = async () => {
+    try {
+      const user = await agent.Account.current();
+      runInAction(() => {
+        this.user = user;
+      })
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
