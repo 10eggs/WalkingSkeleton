@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Persistance;
 using FluentValidation.AspNetCore;
 using FluentValidation;
+using Infrastructure.Security;
+using Application.Interfaces;
 
 namespace API.Extensions
 {
@@ -37,6 +39,10 @@ namespace API.Extensions
       services.AddFluentValidationAutoValidation();
 
       services.AddValidatorsFromAssemblyContaining<Create>();
+
+      services.AddHttpContextAccessor();
+
+      services.AddScoped<IUserAccessor,UserAccessor>();
 
       return services;
     }
