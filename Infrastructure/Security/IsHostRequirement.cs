@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Persistance;
 
 namespace Infrastructure.Security
@@ -32,7 +33,11 @@ namespace Infrastructure.Security
       var activityId = Guid.Parse(_httpContextAccessor.HttpContext?.Request.RouteValues
           .SingleOrDefault(x => x.Key == "id").Value?.ToString());
 
-      var attendee = _dbContext.ActivityAttendees.FindAsync(userId, activityId).Result;
+      //AsNoTracking stops EF with tracking this entity. It has to be done as we are not getting related
+      //objects in EditClass - it cause an issue where Attendees and HostUserName are cleaned up (we won't to avoid it)  
+      var attendee = _dbContext.ActivityAttendees
+        .AsNoTracking()
+        .SingleOrDefaultAsync(x => x.AppUserId == userId && x.ActivityId == activityId).Result;
 
       if (attendee == null) return Task.CompletedTask;
 
