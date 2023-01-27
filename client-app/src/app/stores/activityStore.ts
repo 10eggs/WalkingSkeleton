@@ -3,7 +3,8 @@ import agent from '../api/agent';
 import { Activity } from '../models/activity';
 import {v4 as uuid} from 'uuid';
 import { ObjectFlags } from 'typescript';
-import { format } from 'date-fns';
+import { format, hoursToMinutes } from 'date-fns';
+import { store } from './store';
 
 export default class ActivityStore {
   activityRegistry = new Map<string, Activity>();
@@ -22,6 +23,18 @@ export default class ActivityStore {
   }
 
   private setActivity = (activity:Activity) =>{
+    const user = store.userStore.user;
+    if(user){
+      activity.isGoing = activity.attendees!.some(
+        a => a.username === user.userName
+      );
+
+      /**
+       * username property is not populated as api returns userName
+       */
+      activity.isHost = activity.hostUsername === user.userName;
+      activity.host = activity.attendees?.find(x => x.username === activity.hostUsername);
+    }
     // activity.date = activity.date.split('T')[0];
     activity.date = new Date(activity.date!);
     //We are mutating state of activities here
