@@ -30,7 +30,9 @@ export default observer(function ActivityForm(){
     description: '',
     date: null,
     city: '',
-    venue:''
+    venue:'',
+    hostUsername: '',
+    attendees: []
   })
 
   const validationSchema = Yup.object({
