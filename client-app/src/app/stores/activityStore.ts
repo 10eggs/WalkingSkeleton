@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import agent from '../api/agent';
-import { Activity } from '../models/activity';
+import { Activity, ActivityFormValues } from '../models/activity';
 import {v4 as uuid} from 'uuid';
 import { ObjectFlags } from 'typescript';
 import { format, hoursToMinutes } from 'date-fns';
@@ -105,16 +105,21 @@ export default class ActivityStore {
     return this.activityRegistry.get(id);
   }
 
-  createActivity = async (activity: Activity) => {
-    this.loading = true;
+  createActivity = async (activity: ActivityFormValues) => {
+
+    const user = store.userStore.user;
+    const attendee = new Profile(user!);
+
     activity.id = uuid();
     try{
       await agent.Activities.create(activity);
+      const newActivity = new Activity(activity);
+      newActivity.hostUsername = user!.userName;
+      newActivity.attendees = [attendee];
+      this.setActivity(newActivity);
+
       runInAction(()=>{
-        this.activityRegistry.set(activity.id,activity);
-        this.selectedActivity = activity;
-        this.editMode = false;
-        this.loading = false;
+        this.selectedActivity = newActivity;
       })
     }
     catch(error){
@@ -125,15 +130,15 @@ export default class ActivityStore {
     }
   }
 
-  updateActivity = async (activity: Activity) =>{
-    this.loading = true;
+  updateActivity = async (activity: ActivityFormValues) =>{
     try{
       await agent.Activities.update(activity);
       runInAction(()=>{
-        this.activityRegistry.set(activity.id,activity);
-        this.selectedActivity = activity;
-        this.editMode = false;
-        this.loading =false;
+        if(activity.id){
+          let updatedActivity = {...this.getActivity(activity.id), ...activity}
+          this.activityRegistry.set(activity.id,updatedActivity as Activity);
+          this.selectedActivity = activity as Activity;
+        }
       })
     }
     catch(error){
